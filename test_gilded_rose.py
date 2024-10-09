@@ -9,7 +9,7 @@ class GildedRoseTest(unittest.TestCase):
         items = [Item("foo", 0, 0)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
-        self.assertEquals("fixme", items[0].name)
+        self.assertEquals("foo", items[0].name)
     
     def test_vest_item_should_decrease_after_one_day(self):
         vest = "+5 Dexterity Vest"
@@ -18,7 +18,12 @@ class GildedRoseTest(unittest.TestCase):
 
         gr.update_quality()
 
-        assert gr.get_items_by_name(vest) == [Item(vest, 0, 1), Item(vest, 8, 18), Item(vest, 3, 5)]
+        expected_items = [Item(vest, 0, 1), Item(vest, 8, 18), Item(vest, 3, 5)]
+
+        for item, expected_item in zip(gr.items, expected_items):
+            self.assertEqual(item.name, expected_item.name)
+            self.assertEqual(item.sell_in, expected_item.sell_in)
+            self.assertEqual(item.quality, expected_item.quality)
     
     def test_conjured_items_degrade_twice_as_fast(self):
         items = [Item("Conjured Mana Cake", 3, 6)]
